@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
@@ -10,6 +9,8 @@ import { TodoFooterComponent } from './todo/todo-footer/todo-footer.component';
 import { TodoItemComponent } from './todo/todo-item/todo-item.component';
 import { TodoComponent } from './todo/todo.component';
 import { TodosListComponent } from './todo/todos-list/todos-list.component';
+import { TodoStoreService } from './todo/_services/todo-store/todo-store.service';
+import { MyStoreService } from './todo/_services/todo-store/implementations/my-todo-store/my-store.service';
 
 @NgModule({
   declarations: [
@@ -24,9 +25,15 @@ import { TodosListComponent } from './todo/todos-list/todos-list.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: TodoStoreService,
+      useExisting: MyStoreService
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

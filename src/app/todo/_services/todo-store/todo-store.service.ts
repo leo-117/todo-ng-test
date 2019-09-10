@@ -10,7 +10,9 @@ export abstract class TodoStoreService<ItemType extends StoreItem> implements St
   constructor() { }
   public abstract insert(newItem: ItemType): void;
   public abstract update(updatedItem: ItemType): ItemType;
-  public abstract delete(id: number): boolean;
+  public abstract delete(id: string): boolean;
+  public abstract deleteByPredicate(predicate: (item: ItemType) => boolean): void;
+  public abstract filterByPredicate(predicate: (item: ItemType) => boolean): void;
   public abstract onLoadItems(): Observable<Array<ItemType>>;
   public abstract reset(): void;
 }

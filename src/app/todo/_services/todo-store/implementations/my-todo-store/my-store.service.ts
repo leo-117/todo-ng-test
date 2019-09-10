@@ -22,19 +22,44 @@ export class MyStoreService implements Store<TodoItem> {
   }
 
   public update(updatedItem: TodoItem): TodoItem {
+    const index = this.findIndexById(updatedItem.id);
+    if (index === -1) {
+      return;
+    }
+    this.items[index] = updatedItem;
+    this.sbtItems.next(this.items);
     return updatedItem;
   }
 
-  public delete(id: number): boolean {
-    return false;
+  public delete(id: string): boolean {
+    const index: number =  this.findIndexById(id);
+    if (index === -1) {
+      return false;
+    }
+    this.items.splice(index, 1);
+    this.sbtItems.next(cloneDeep(this.items));
+    return true;
   }
 
   public reset(): void {
-    
+
+  }
+
+  public deleteByPredicate(predicate: (item: TodoItem) => boolean): void {
+    this.items = this.items.filter((item: TodoItem) => !predicate(item));
+    this.sbtItems.next(this.items);
+  }
+
+  public filterByPredicate(predicate: (item: TodoItem) => boolean): void {
+    this.sbtItems.next(this.items.filter((item: TodoItem) => predicate(item)));
   }
 
   public onLoadItems(): Observable<Array<TodoItem>> {
     return this.sbtItems.asObservable();
+  }
+
+  private findIndexById(id: string): number {
+    return this.items.findIndex((item: TodoItem) => item.id === id);
   }
 
 }

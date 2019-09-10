@@ -30,7 +30,8 @@ export class TodoAddComponent implements OnInit {
     this.storeServ.insert(
       {
         id: this.generateId(),
-        text: this.txtValue
+        text: this.txtValue,
+        status: 'todo'
       }
     );
     this.txtValue = '';
